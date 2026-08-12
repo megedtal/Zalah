@@ -108,6 +108,15 @@ input{font:inherit;color:inherit}
 .ml .ext{display:inline-flex;align-items:center;gap:6px;background:#EDF1F5;color:var(--ink-2);
   border-radius:3px;padding:3px 9px;font-weight:500}
 .ml .ext.none{background:none;padding:0;color:var(--ink-3);font-weight:400}
+.nomail{padding:40px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.nomail svg{width:34px;height:34px;fill:none;stroke:var(--ink-3);stroke-width:1.3;
+  stroke-linecap:round;stroke-linejoin:round;opacity:.65}
+.nomail .h{font-size:14.5px;font-weight:600;color:var(--ink-2);margin-top:4px}
+.nomail .p{font-size:13.5px;color:var(--ink-3);line-height:1.7;max-width:250px}
+.cpick{display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:start;width:100%;max-width:270px;margin-top:8px}
+.cpick select{width:100%;border:1px solid var(--rule);border-radius:3px;padding:9px 10px;
+  font:inherit;font-size:14px;background:var(--panel);color:var(--ink)}
+.cpick select:hover{border-color:var(--ink-3)}
 .row.hl{background:#FFF8EC}
 .row.dim{opacity:.4}
 .srcbar{display:none;align-items:center;gap:10px;padding:10px 22px;background:#FFF8EC;
@@ -144,6 +153,7 @@ input{font:inherit;color:inherit}
 .dhead .grow{flex:1}
 .ico{width:32px;height:32px;border-radius:2px;display:grid;place-items:center;color:var(--ink-2);position:relative}
 .ico:hover{background:var(--rule-2);color:var(--ink)}
+.ico.sm{width:26px;height:26px;margin-inline-end:-6px}
 .ico.go{background:var(--accent);color:#fff}
 .ico.go:hover{background:#B81C22;color:#fff}
 svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
@@ -297,7 +307,10 @@ svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stro
 
   <!-- ═══ 1 · requests ═══ -->
   <section class="col">
-    <div class="chead"><span class="t">בקשות מחיר</span><span class="grow"></span><span class="c" id="rCount">5</span></div>
+    <div class="chead"><span class="t">בקשות מחיר</span><span class="grow"></span><span class="c" id="rCount">5</span>
+      <button class="ico sm" data-tip="הצעת מחיר ידנית" onclick="newQuote()" aria-label="הצעת מחיר ידנית">
+        <svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
     <div class="srch"><input id="mSearch" placeholder="חיפוש לקוח או נושא" oninput="reqs()"></div>
     <div class="sync">
       <span>Microsoft 365 · סונכרן <span class="n" id="syncAt">09:44</span></span>
@@ -493,6 +506,11 @@ const REQS=[
 ];
 const R = id => REQS.find(x=>x.id===id);
 
+/* לקוחות קיימים בכרטסת (למי שפותח הצעה ידנית) */
+const CUSTOMERS=["אלקטרו־דן שירותי חשמל","מפעלי תעשיות ברק בע״מ","עיריית ראשון לציון",
+  "ש.ג. מיזוג אוויר בע״מ","ג׳י.טי טכנולוגיות ייצור","א.ב. אחזקות ותשתיות בע״מ",
+  "מוסך מרכזי הצפון","קבוצת נדל״ן אורן"];
+
 let s = {req:"r1", focus:null, lines:[], disc:4};
 
 /* ── render ── */
@@ -508,6 +526,9 @@ function reqs(){
         <span class="pill ${STATE[q.quote.state].c}">${STATE[q.quote.state].he}</span>
         <span class="rno n">${q.quote.no}</span>
       </div>
+      ${!q.mails.length?`<span class="thread">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        נוצרה ידנית</span>`:""}
       ${q.mails.length>1?`<span class="thread">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v9H4z"/><path d="M7 5h13v9"/></svg>
         <span class="n">${q.mails.length}</span> מיילים בבקשה זו</span>`:""}
@@ -517,6 +538,22 @@ function reqs(){
 function thread(){
   const q=R(s.req);
   document.getElementById("eCount").textContent=q.mails.length;
+  if(!q.mails.length){
+    document.getElementById("thread").innerHTML=`
+      <div class="nomail">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.6 6.6 12 13l8.4-6.4"/><path d="m4 4 16 16"/></svg>
+        <div class="h">לא זוהה מייל</div>
+        <div class="p">ההצעה נוצרה ידנית ולא מקושרת לפניית לקוח. בחרו לקוח והוסיפו פריטים מהמלאי בעמודה שלצד.</div>
+        <label class="cpick">
+          <span class="lbl">לקוח</span>
+          <select onchange="setCust(this.value)">
+            <option value="">בחרו לקוח מהרשימה…</option>
+            ${CUSTOMERS.map(c=>`<option value="${c}" ${c===q.cust?"selected":""}>${c}</option>`).join("")}
+          </select>
+        </label>
+      </div>`;
+    return;
+  }
   document.getElementById("thread").innerHTML=q.mails.map(m=>`
     <button class="ml" aria-current="${m.id===s.focus}" onclick="focusMail('${m.id}')">
       <div class="r"><span class="f">${m.from} · ${m.role}</span><span class="t">${m.time}</span></div>
@@ -541,8 +578,9 @@ function head(){
   pill.textContent=st.he; pill.className="pill "+st.c;
   document.getElementById("dTitle").textContent=d.title;
   document.getElementById("dTo").textContent=q.cust;
-  document.getElementById("dToMail").innerHTML=
-    `נבנתה מ־<span class="n">${q.mails.length}</span> ${q.mails.length===1?"מייל":"מיילים"}`;
+  document.getElementById("dToMail").innerHTML= q.mails.length
+    ? `נבנתה מ־<span class="n">${q.mails.length}</span> ${q.mails.length===1?"מייל":"מיילים"}`
+    : "נוצרה ידנית";
 }
 
 function rows(){
@@ -623,6 +661,23 @@ function sums(){
 }
 
 /* ── actions ── */
+function setCust(name){
+  if(!name) return;
+  R(s.req).cust=name;
+  reqs(); head();
+  say("הלקוח עודכן · "+name);
+}
+
+let manualSeq=0;
+function newQuote(){
+  const now=new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});
+  const id="m"+(++manualSeq);
+  REQS.unshift({id,cust:"טרם נבחר לקוח",subject:"הצעת מחיר ידנית",time:"היום "+now,mails:[],
+    quote:{title:"הצעת מחיר ידנית",no:"DR-2026-"+String(155+manualSeq).padStart(4,"0"),state:"DRAFT",lines:[]}});
+  document.getElementById("mSearch").value="";
+  pickReq(id);
+  say("נפתחה הצעת מחיר ידנית");
+}
 function pickReq(id){ s.req=id; s.focus=null; load(); reqs(); thread(); head(); srcbar(); }
 function focusMail(id){
   s.focus = s.focus===id ? null : id;
