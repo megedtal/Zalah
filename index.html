@@ -231,18 +231,73 @@ svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stro
 .add{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink-2);
   padding:12px 16px;width:100%;border:1px dashed var(--line,#CBD2D9);border-radius:3px}
 .add:hover{color:var(--ink);border-color:var(--ink-3);background:var(--zebra)}
-.picker{display:none;margin-top:8px;border:1px solid var(--rule);border-radius:3px}
-.picker.open{display:block}
-.picker input{width:100%;border:0;border-bottom:1px solid var(--rule);padding:12px 16px;outline:0;font-size:14.5px}
-.pl{max-height:230px;overflow-y:auto}
-.pi{display:flex;align-items:center;gap:12px;width:100%;padding:9px 14px;border-top:1px solid var(--rule-2)}
-.pi:first-child{border-top:0}
-.pi:hover{background:var(--zebra)}
-.pi .pn{font-size:14.5px;font-weight:500}
-.pi .ps{font-size:13px;color:var(--ink-3);margin-top:3px}
-.pi .grow{flex:1}
-.pi .pp{font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.empty{padding:14px;font-size:13px;color:var(--ink-3);text-align:center}
+/* ══════ catalog modal ══════ */
+.mask{position:fixed;inset:0;background:rgba(15,36,64,.42);z-index:60;display:none;
+  place-items:center;padding:24px}
+.mask.on{display:grid}
+.modal{width:min(900px,100%);max-height:min(86vh,780px);background:var(--panel);
+  border:1px solid var(--rule);border-radius:4px;box-shadow:0 18px 50px rgba(15,36,64,.20);
+  display:flex;flex-direction:column;overflow:hidden}
+.mh{flex:none;display:flex;align-items:center;gap:10px;padding:15px 20px;border-bottom:1px solid var(--rule)}
+.mh h2{font-size:15px;font-weight:600;color:var(--ink)}
+.mh .c{font-size:13px;color:var(--ink-3)}
+.mh .grow{flex:1}
+.mx{width:30px;height:30px;border-radius:3px;display:grid;place-items:center;color:var(--ink-3);flex:none}
+.mx:hover{background:var(--zebra);color:var(--ink)}
+.mtools{flex:none;padding:13px 20px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:11px}
+.msrch{position:relative}
+.msrch input{width:100%;border:1px solid var(--rule);border-radius:3px;padding:10px 12px;
+  padding-inline-start:38px;font-size:14.5px;outline:0;background:var(--panel)}
+.msrch input:focus{border-color:var(--ink-3)}
+.msrch svg{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;color:var(--ink-3);pointer-events:none}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:13px;color:var(--ink-2);border:1px solid var(--rule);border-radius:999px;
+  padding:5px 12px;background:var(--panel);white-space:nowrap}
+.chip:hover{border-color:var(--ink-3);color:var(--ink)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.mbody{flex:1;overflow-y:auto;padding:0 20px 20px}
+.grp+.grp{margin-top:20px}
+.ghead{display:flex;align-items:center;gap:10px;padding:14px 0 10px;position:sticky;top:0;
+  background:var(--panel);z-index:1}
+.ghead .gt{font-size:11.5px;font-weight:600;color:var(--ink-3);letter-spacing:.04em}
+.ghead .gc{font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ghead .gl{flex:1;height:1px;background:var(--rule-2)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:10px}
+.card{border:1px solid var(--rule);border-radius:3px;padding:12px;background:var(--panel);
+  display:flex;flex-direction:column;gap:7px;text-align:start;transition:border-color .12s,background .12s}
+.card:hover{border-color:var(--ink-3);background:var(--zebra)}
+.card .ctop{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.ct{width:52px;height:52px;flex:none;border:1px solid var(--rule-2);border-radius:3px;
+  background:var(--zebra);display:grid;place-items:center;color:var(--ink-3)}
+.ct svg{width:26px;height:26px}
+.card:hover .ct{border-color:var(--rule);color:var(--ink-2)}
+.card .cinfo{min-width:0;display:flex;flex-direction:column;gap:5px}
+.card .cn{font-size:14px;font-weight:500;line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  overflow-wrap:anywhere}
+.card .cs{font-size:12px;color:var(--ink-3);overflow-wrap:anywhere}
+.card .cb{display:flex;align-items:center;gap:8px;margin-top:3px}
+.card .grow{flex:1}
+.card .cp{font-size:15px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.card .cadd{font-size:12.5px;font-weight:500;border:1px solid var(--rule);border-radius:3px;
+  padding:4px 10px;color:var(--ink-2)}
+.card:hover .cadd{border-color:var(--ink);color:var(--ink)}
+.card.in{background:var(--zebra);border-style:dashed}
+.card.in .cn,.card.in .cp{color:var(--ink-2)}
+.card.in .cadd{color:var(--ink-3);border-color:var(--rule-2)}
+.stk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
+.stk .bar{width:32px;height:3px;background:var(--rule);border-radius:2px;overflow:hidden;flex:none}
+.stk .bar i{display:block;height:100%;background:var(--navy-2)}
+.stk.low{color:var(--accent)}
+.stk.low .bar i{background:var(--accent)}
+.mempty{padding:48px 20px;text-align:center;font-size:13.5px;color:var(--ink-3)}
+@media(max-width:640px){
+  .mask{padding:0}
+  .modal{width:100%;height:100%;max-height:100%;border:0;border-radius:0}
+  .cards{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){.card{transition:none}}
 
 /* sticky foot */
 .din{width:54px;height:30px;border:1px solid var(--rule);border-radius:3px;background:var(--panel);
@@ -377,10 +432,6 @@ svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stro
         <button class="add" onclick="togglePicker()">
           <svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M12 5v14M5 12h14"/></svg> הוסף פריט מהמלאי
         </button>
-        <div class="picker" id="picker">
-          <input id="pSearch" placeholder="שם מוצר או מק״ט" oninput="renderPicker()">
-          <div class="pl" id="plist"></div>
-        </div>
       </div>
     </div>
 
@@ -398,6 +449,27 @@ svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stro
   </section>
 </div>
 
+<div class="mask" id="mask" onclick="if(event.target===this)closePicker()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="mh">
+      <h2 id="mTitle">הוספת פריט מהמלאי</h2>
+      <span class="c" id="mCount"></span>
+      <span class="grow"></span>
+      <button class="mx" onclick="closePicker()" aria-label="סגירה">
+        <svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="mtools">
+      <div class="msrch">
+        <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="pSearch" placeholder="חיפוש לפי שם מוצר, מק״ט או מותג" oninput="renderPicker()" aria-label="חיפוש במלאי">
+      </div>
+      <div class="chips" id="mChips"></div>
+    </div>
+    <div class="mbody" id="plist"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -411,23 +483,23 @@ const unit  = n => "₪" + nf2.format(r2(n));           // unit prices keep agor
 
 /* ── catalog ── */
 const CAT=[
- {sku:"4051182",name:"מברגה/מקדחה נטענת 18V LXT, 2 סוללות 5.0Ah וקייס",brand:"MAKITA",mpn:"DHP484RTJ",u:"יח׳",price:1290,stock:18},
- {sku:"4057003",name:"סוללה 18V LXT 5.0Ah עם חיווי טעינה",brand:"MAKITA",mpn:"BL1850B",u:"יח׳",price:385,stock:26},
- {sku:"9010507",name:"ארגז כלים מודולרי FatMax, 3 קומות על גלגלים",brand:"STANLEY",mpn:"FMST83319",u:"יח׳",price:640,stock:12},
- {sku:"2011219",name:"סט מברגים מתחלפים מבודד 1000V, 17 חלקים",brand:"WERA",mpn:"KK VDE 17",u:"סט",price:797.5,stock:9},
- {sku:"2013104",name:"מפתח מומנט ½״ 40–200Nm עם נעילה",brand:"BLOSTA",mpn:"BL-TW200",u:"יח׳",price:690,stock:7},
- {sku:"7010301",name:"משקפי מגן ANSI Z87+ נגד אדים",brand:"3M",mpn:"SF401AF",u:"יח׳",price:49,stock:120},
- {sku:"4052125",name:"פטישון נטען 18V SDS-Plus Brushless",brand:"MILWAUKEE",mpn:"M18 CHPX",u:"יח׳",price:1980,stock:4},
- {sku:"4052117",name:"פטישון SDS-Plus 800W 2.7J",brand:"BOSCH",mpn:"GBH 2-26",u:"יח׳",price:1150,stock:11},
- {sku:"4051204",name:"מקדחה/מברגה נטענת 12V קומפקטית, 2 סוללות 2.0Ah",brand:"MAKITA",mpn:"DF333DWAE",u:"יח׳",price:690,stock:24},
- {sku:"4051190",name:"מברגת אימפקט נטענת 18V 200Nm",brand:"BOSCH",mpn:"GDX 18V-200",u:"יח׳",price:899,stock:7},
- {sku:"4054210",name:"מסור עגול נטען 18V 165מ״מ",brand:"MAKITA",mpn:"DHS680Z",u:"יח׳",price:1420,stock:6},
- {sku:"4053502",name:"מלטשת אקסצנטרית 125מ״מ 300W",brand:"BOSCH",mpn:"GEX 125-1",u:"יח׳",price:645,stock:14},
- {sku:"4053118",name:"משחזת זווית נטענת 18V 125מ״מ, גוף בלבד",brand:"MAKITA",mpn:"DGA504Z",u:"יח׳",price:860,stock:9},
- {sku:"4053101",name:"משחזת זווית 125מ״מ 1400W, הפעלה רכה",brand:"BOSCH",mpn:"GWS 14-125",u:"יח׳",price:549,stock:32},
- {sku:"4052330",name:"פטיש חציבה SDS-Max 17J 1500W",brand:"MAKITA",mpn:"HM1203C",u:"יח׳",price:3690,stock:2},
- {sku:"6020441",name:"פנס עבודה נטען 18V LED 1250 לומן",brand:"MAKITA",mpn:"DML812",u:"יח׳",price:320,stock:15},
- {sku:"3010119",name:"ערכת מקדחים למתכת HSS-Co, 19 חלקים",brand:"RUKO",mpn:"215215",u:"סט",price:189,stock:41},
+ {sku:"4051182",name:"מברגה/מקדחה נטענת 18V LXT, 2 סוללות 5.0Ah וקייס",brand:"MAKITA",mpn:"DHP484RTJ",u:"יח׳",price:1290,stock:18,cat:"מברגות ומקדחות"},
+ {sku:"4057003",name:"סוללה 18V LXT 5.0Ah עם חיווי טעינה",brand:"MAKITA",mpn:"BL1850B",u:"יח׳",price:385,stock:26,cat:"סוללות ותאורה"},
+ {sku:"9010507",name:"ארגז כלים מודולרי FatMax, 3 קומות על גלגלים",brand:"STANLEY",mpn:"FMST83319",u:"יח׳",price:640,stock:12,cat:"אביזרים, מגן ואחסון"},
+ {sku:"2011219",name:"סט מברגים מתחלפים מבודד 1000V, 17 חלקים",brand:"WERA",mpn:"KK VDE 17",u:"סט",price:797.5,stock:9,cat:"כלי יד"},
+ {sku:"2013104",name:"מפתח מומנט ½״ 40–200Nm עם נעילה",brand:"BLOSTA",mpn:"BL-TW200",u:"יח׳",price:690,stock:7,cat:"כלי יד"},
+ {sku:"7010301",name:"משקפי מגן ANSI Z87+ נגד אדים",brand:"3M",mpn:"SF401AF",u:"יח׳",price:49,stock:120,cat:"אביזרים, מגן ואחסון"},
+ {sku:"4052125",name:"פטישון נטען 18V SDS-Plus Brushless",brand:"MILWAUKEE",mpn:"M18 CHPX",u:"יח׳",price:1980,stock:4,cat:"פטישונים וחציבה"},
+ {sku:"4052117",name:"פטישון SDS-Plus 800W 2.7J",brand:"BOSCH",mpn:"GBH 2-26",u:"יח׳",price:1150,stock:11,cat:"פטישונים וחציבה"},
+ {sku:"4051204",name:"מקדחה/מברגה נטענת 12V קומפקטית, 2 סוללות 2.0Ah",brand:"MAKITA",mpn:"DF333DWAE",u:"יח׳",price:690,stock:24,cat:"מברגות ומקדחות"},
+ {sku:"4051190",name:"מברגת אימפקט נטענת 18V 200Nm",brand:"BOSCH",mpn:"GDX 18V-200",u:"יח׳",price:899,stock:7,cat:"מברגות ומקדחות"},
+ {sku:"4054210",name:"מסור עגול נטען 18V 165מ״מ",brand:"MAKITA",mpn:"DHS680Z",u:"יח׳",price:1420,stock:6,cat:"משחזות, מלטשות ומסורים"},
+ {sku:"4053502",name:"מלטשת אקסצנטרית 125מ״מ 300W",brand:"BOSCH",mpn:"GEX 125-1",u:"יח׳",price:645,stock:14,cat:"משחזות, מלטשות ומסורים"},
+ {sku:"4053118",name:"משחזת זווית נטענת 18V 125מ״מ, גוף בלבד",brand:"MAKITA",mpn:"DGA504Z",u:"יח׳",price:860,stock:9,cat:"משחזות, מלטשות ומסורים"},
+ {sku:"4053101",name:"משחזת זווית 125מ״מ 1400W, הפעלה רכה",brand:"BOSCH",mpn:"GWS 14-125",u:"יח׳",price:549,stock:32,cat:"משחזות, מלטשות ומסורים"},
+ {sku:"4052330",name:"פטיש חציבה SDS-Max 17J 1500W",brand:"MAKITA",mpn:"HM1203C",u:"יח׳",price:3690,stock:2,cat:"פטישונים וחציבה"},
+ {sku:"6020441",name:"פנס עבודה נטען 18V LED 1250 לומן",brand:"MAKITA",mpn:"DML812",u:"יח׳",price:320,stock:15,cat:"סוללות ותאורה"},
+ {sku:"3010119",name:"ערכת מקדחים למתכת HSS-Co, 19 חלקים",brand:"RUKO",mpn:"215215",u:"סט",price:189,stock:41,cat:"אביזרים, מגן ואחסון"},
 ];
 const P = s => CAT.find(p => p.sku === s);
 const SWAPS={"4051182":["4051204","4052117"],"2011219":["3010119"],"9010507":["6020441"],
@@ -629,18 +701,73 @@ function rows(){
   renderPicker(); sums();
 }
 
+/* ── catalog modal ── */
+const CATS=[...new Set(CAT.map(p=>p.cat))];
+/* placeholder thumbnails: line art per category, no external assets */
+const THUMB={
+ "מברגות ומקדחות":`<path d="M3 8h9v6H5a2 2 0 0 1-2-2z"/><path d="M12 9.5h4l5-2v5l-5-2h-4"/><path d="M6 14v4h3.5"/>`,
+ "פטישונים וחציבה":`<path d="M10 7h8l3 3-3 3h-8z"/><path d="M10 10H7l-4 9 2 2 6-8z"/>`,
+ "משחזות, מלטשות ומסורים":`<circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/><path d="M12 4.5v2.5M12 17v2.5M4.5 12H7M17 12h2.5M6.7 6.7l1.8 1.8M15.5 15.5l1.8 1.8M17.3 6.7l-1.8 1.8M8.5 15.5l-1.8 1.8"/>`,
+ "כלי יד":`<path d="M15.5 4.2a5 5 0 0 0-4.3 7.6L4 19l2 2 7.2-7.2a5 5 0 0 0 6.4-6.3l-2.9 2.9-2.6-.7-.7-2.6z"/>`,
+ "סוללות ותאורה":`<rect x="3" y="8" width="15" height="9" rx="2"/><path d="M18 11h2.5v3H18"/><path d="M7 11v3M10.5 11v3M14 11v3"/>`,
+ "אביזרים, מגן ואחסון":`<rect x="3" y="8" width="18" height="11" rx="2"/><path d="M9 8V6.5A2.5 2.5 0 0 1 11.5 4h1A2.5 2.5 0 0 1 15 6.5V8"/><path d="M3 13.5h18"/>`,
+};
+const thumb=cat=>`<span class="ct"><svg class="i" viewBox="0 0 24 24" aria-hidden="true">${THUMB[cat]||""}</svg></span>`;
+let pCat="all";
+
+function pickerHits(){
+  const term=(document.getElementById("pSearch")?.value||"").trim().toLowerCase();
+  return CAT.filter(p=>pCat==="all"||p.cat===pCat)
+    .filter(p=>!term||p.name.toLowerCase().includes(term)||p.sku.includes(term)
+      ||p.brand.toLowerCase().includes(term)||p.mpn.toLowerCase().includes(term));
+}
+
 function renderPicker(){
   const box=document.getElementById("plist"); if(!box) return;
-  const term=(document.getElementById("pSearch")?.value||"").trim();
   const used=new Set(s.lines.map(l=>l.sku));
-  const hits=CAT.filter(p=>!used.has(p.sku))
-    .filter(p=>!term||p.name.includes(term)||p.sku.includes(term)||p.brand.toLowerCase().includes(term.toLowerCase()));
-  box.innerHTML=hits.length?hits.map(p=>`
-    <button class="pi" onclick="addLine('${p.sku}')">
-      <div><div class="pn">${p.name}</div><div class="ps">מק״ט <span class="n">${p.sku}</span> · <span class="n">${p.brand}</span> · במלאי <span class="n">${p.stock}</span></div></div>
-      <span class="grow"></span><span class="pp m">${unit(p.price)}</span>
-    </button>`).join(""):`<div class="empty">אין מוצר תואם</div>`;
+  const hits=pickerHits();
+
+  const chips=document.getElementById("mChips");
+  chips.innerHTML=[["all","הכול"],...CATS.map(c=>[c,c])].map(([v,label])=>
+    `<button class="chip${pCat===v?" on":""}" onclick="setPCat('${v}')"
+      aria-pressed="${pCat===v}">${label}</button>`).join("");
+
+  document.getElementById("mCount").textContent=
+    hits.length+" פריטים"+(used.size?" · "+used.size+" כבר בהצעה":"");
+
+  const groups=CATS.map(c=>[c,hits.filter(p=>p.cat===c)]).filter(([,list])=>list.length);
+  box.innerHTML=groups.length?groups.map(([cat,list])=>`
+    <div class="grp">
+      <div class="ghead">
+        <span class="gt">${cat}</span>
+        <span class="gc n">${list.length}</span>
+        <span class="gl"></span>
+      </div>
+      <div class="cards">${list.map(p=>{
+        const inQ=used.has(p.sku), low=p.stock<=5;
+        return `<button class="card${inQ?" in":""}" onclick="addLine('${p.sku}')"
+          aria-label="${inQ?"הוספת יחידה נוספת":"הוספה להצעה"} · ${p.name}">
+          <div class="ctop">
+            ${thumb(p.cat)}
+            <span class="cinfo">
+              <span class="cn">${p.name}</span>
+              <span class="cs">מק״ט <span class="n">${p.sku}</span> · <span class="n">${p.brand}</span></span>
+            </span>
+          </div>
+          <div class="stk${low?" low":""}">
+            <span class="bar"><i style="width:${Math.min(100,p.stock/40*100)}%"></i></span>
+            <span>${low?"מלאי נמוך · ":"במלאי "}<span class="n">${p.stock}</span></span>
+          </div>
+          <div class="cb">
+            <span class="cp">${unit(p.price)}</span>
+            <span class="grow"></span>
+            <span class="cadd">${inQ?"בהצעה":"הוספה"}</span>
+          </div>
+        </button>`;}).join("")}</div>
+    </div>`).join(""):`<div class="mempty">אין מוצר תואם. אפשר לחפש לפי מק״ט או מותג.</div>`;
 }
+
+function setPCat(c){ pCat=c; renderPicker(); }
 
 function sums(){
   const sub=r2(s.lines.reduce((a,l)=>a+r2(P(l.sku).price*l.n),0));
@@ -701,11 +828,29 @@ function qty(i,d){ s.lines[i].n=Math.max(1,s.lines[i].n+d); rows(); }
 function drop(i){ s.lines.splice(i,1); rows(); srcbar(); say("השורה הוסרה"); }
 function swapTo(i,sku){ s.lines[i]={sku,n:s.lines[i].n,src:null,from:s.lines[i].from}; rows(); say("הפריט הוחלף"); }
 function openSwap(i){ document.getElementById("r"+i).classList.toggle("open"); }
-function addLine(sku){ s.lines.push({sku,n:1,src:null,from:null}); rows(); say("הפריט נוסף"); }
-function togglePicker(){
-  document.getElementById("picker").classList.toggle("open");
-  document.getElementById("pSearch").focus();
+function addLine(sku){
+  const i=s.lines.findIndex(l=>l.sku===sku);
+  if(i>-1){ s.lines[i].n++; rows(); say("הכמות עודכנה · "+P(sku).name); return; }
+  s.lines.push({sku,n:1,src:null,from:null}); rows(); say("הפריט נוסף · "+P(sku).name);
 }
+function togglePicker(){
+  const m=document.getElementById("mask");
+  m.classList.contains("on")?closePicker():openPicker();
+}
+function openPicker(){
+  pCat="all";
+  document.getElementById("pSearch").value="";
+  renderPicker();
+  document.getElementById("mask").classList.add("on");
+  document.getElementById("pSearch").focus({preventScroll:true});
+}
+function closePicker(){
+  document.getElementById("mask").classList.remove("on");
+  document.querySelector(".add")?.focus();
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&document.getElementById("mask").classList.contains("on")) closePicker();
+});
 document.getElementById("disc").addEventListener("input",e=>{
   s.disc=Math.min(40,Math.max(0,+e.target.value||0)); sums();
 });
