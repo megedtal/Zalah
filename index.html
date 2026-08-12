@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>צלח · מרכז המכירות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F2440;
+  --navy-2:#1B3A63;
+  --accent:#D8232A;
+  --stage:#E9EBEE;
+  --sheet:#FFFFFF;
+  --panel:#FFFFFF;
+  --ink:#0D141B;
+  --ink-2:#3A4653;
+  --ink-3:#5E6B78;
+  --rule:#DCE1E6;
+  --rule-2:#EBEEF1;
+  --zebra:#FAFBFC;
+  --ui:"Assistant",-apple-system,"Segoe UI",sans-serif;
+  --mono:"Assistant",-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--ui);font-size:16px;background:var(--panel);color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.n{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;direction:ltr;display:inline-block;unicode-bidi:isolate}
+.m{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;
+  direction:ltr;unicode-bidi:isolate;display:inline-block}
+.lbl{font-size:11.5px;font-weight:500;color:var(--ink-3)}
+
+/* ══════ masthead ══════ */
+.top{height:56px;background:var(--panel);border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:0 20px;flex:none}
+.brand{display:flex;align-items:center;flex:none}
+.brand img{height:30px;width:auto;display:block}
+.top .bar{width:1px;height:18px;background:var(--rule)}
+.top h1{font-size:15px;font-weight:500;color:var(--ink-2)}
+.top .grow{flex:1}
+.top .meta{font-size:13.5px;color:var(--ink-3)}
+.top .av{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;
+  display:grid;place-items:center;font-size:11px;font-weight:600}
+
+/* ══════ frame ══════ */
+.frame{display:grid;grid-template-columns:1fr 1fr 2fr;height:calc(100vh - 56px)}
+.col{display:flex;flex-direction:column;min-height:0;border-inline-start:1px solid var(--rule);background:var(--panel)}
+.col:first-child{border-inline-start:0}
+.chead{height:48px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--rule);flex:none}
+.chead .t{font-size:13px;font-weight:600;color:var(--ink-2)}
+.chead .c{font-size:13px;color:var(--ink-3)}
+.chead .grow{flex:1}
+.srch{padding:10px 16px 0;flex:none}
+.srch input{width:100%;border:1px solid var(--rule);border-radius:3px;padding:9px 12px;font-size:14.5px;outline:0;background:var(--panel)}
+.srch input::placeholder{color:var(--ink-3)}
+.srch input:focus{border-color:var(--ink-3)}
+.list{flex:1;min-height:0;overflow-y:auto;padding:8px 0 20px}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#D3D7DC;border-radius:10px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ══════ col 1 ══════ */
+.mail{display:block;width:100%;padding:14px 18px;position:relative}
+.mail:hover{background:var(--zebra)}
+.mail[aria-current="true"]{background:#F2F4F6}
+.mail[aria-current="true"]::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.mail .r{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.mail .f{font-size:15px;font-weight:600}
+.mail .t{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.mail .s{font-size:14px;color:var(--ink-2);line-height:1.55;margin-top:5px;
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.rmeta{display:flex;align-items:center;gap:9px;margin-top:9px}
+.rmeta .rno{font-size:12.5px;color:var(--ink-3)}
+.thread{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:13px;
+  color:var(--ink-2);background:#EDF1F5;border-radius:3px;padding:3px 9px}
+.thread svg{width:14px;height:14px;color:var(--ink-3)}
+
+/* M365 sync strip */
+.sync{display:flex;align-items:center;gap:8px;padding:11px 18px;margin-top:11px;
+  border-top:1px solid var(--rule-2);font-size:13px;color:var(--ink-3)}
+.sync .grow{flex:1}
+.fetch{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--ink-2);
+  border:1px solid var(--rule);border-radius:3px;padding:6px 12px;background:var(--panel)}
+.fetch:hover{border-color:var(--ink-3);color:var(--ink)}
+.fetch svg{width:13px;height:13px}
+.fetch.busy{color:var(--ink-3);pointer-events:none}
+.fetch.busy svg{animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══════ col 2 · the thread ══════ */
+.ml{display:block;width:100%;padding:15px 18px;position:relative;border-bottom:1px solid var(--rule-2)}
+.ml:hover{background:var(--zebra)}
+.ml[aria-current="true"]{background:#EFF3F7}
+.ml[aria-current="true"]::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.ml .r{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ml .f{font-size:14.5px;font-weight:600}
+.ml .t{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.ml .sub{font-size:14px;color:var(--ink);margin-top:5px;line-height:1.5}
+.ml .bd{font-size:13.5px;color:var(--ink-2);margin-top:7px;line-height:1.7}
+.ml .bd em{font-style:normal;color:var(--ink);box-shadow:inset 0 -2px 0 #F3D9A8}
+.ml .ft{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--ink-3)}
+.ml .ext{display:inline-flex;align-items:center;gap:6px;background:#EDF1F5;color:var(--ink-2);
+  border-radius:3px;padding:3px 9px;font-weight:500}
+.ml .ext.none{background:none;padding:0;color:var(--ink-3);font-weight:400}
+.row.hl{background:#FFF8EC}
+.row.dim{opacity:.4}
+.srcbar{display:none;align-items:center;gap:10px;padding:10px 22px;background:#FFF8EC;
+  border-bottom:1px solid var(--rule);font-size:13.5px;color:var(--ink-2)}
+.srcbar.on{display:flex}
+.srcbar .grow{flex:1}
+.srcbar button{font-size:13px;font-weight:500;color:var(--ink-2);border:1px solid var(--rule);
+  border-radius:3px;padding:4px 11px;background:var(--panel)}
+.srcbar button:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ══════ col 2 ══════ */
+.qz{display:block;width:100%;padding:15px 18px;position:relative}
+.qz:hover{background:var(--zebra)}
+.qz[aria-current="true"]{background:#F2F4F6}
+.qz[aria-current="true"]::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.qz .r{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.qz .ti{font-size:15px;font-weight:600}
+.qz .am{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.qz .m{display:flex;align-items:center;gap:9px;margin-top:8px}
+.pill{font-size:12px;font-weight:600;padding:2px 9px;border-radius:3px;border:1px solid transparent;
+  white-space:nowrap;display:inline-block}
+.st-draft   {background:#EEF1F4;color:#4A5663;border-color:#DCE2E8}
+.st-review  {background:#FDF2DA;color:#8A5A00;border-color:#F0DCA6}
+.st-sent    {background:#E7F0FB;color:#14539E;border-color:#C4D9F2}
+.st-accepted{background:#E5F4E9;color:#1B6E36;border-color:#BCE0C7}
+.st-rejected{background:#FCEAEA;color:#A32220;border-color:#F2C9C8}
+.qz .d{font-size:13px;color:var(--ink-3)}
+
+/* ══════ col 3 ══════ */
+.dhead{height:48px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--rule);flex:none}
+.dhead .lead{font-size:14px;color:var(--ink-2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dhead .lead b{color:var(--ink);font-weight:500}
+.dhead .grow{flex:1}
+.ico{width:32px;height:32px;border-radius:2px;display:grid;place-items:center;color:var(--ink-2);position:relative}
+.ico:hover{background:var(--rule-2);color:var(--ink)}
+.ico.go{background:var(--accent);color:#fff}
+.ico.go:hover{background:#B81C22;color:#fff}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+[data-tip]::after{content:attr(data-tip);position:absolute;top:calc(100% + 6px);inset-inline-end:0;
+  background:var(--ink);color:#fff;font-family:var(--ui);font-size:12px;white-space:nowrap;
+  padding:4px 8px;border-radius:2px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:40}
+[data-tip]:hover::after,[data-tip]:focus-visible::after{opacity:1}
+
+.stage{flex:1;min-height:0;overflow-y:auto;background:var(--panel)}
+
+/* quote header */
+.qh{padding:20px 22px 18px;border-bottom:1px solid var(--rule)}
+.qh .r1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.qh h2{font-size:23px;font-weight:700;letter-spacing:-.015em}
+.qh .no{font-size:14px;color:var(--ink-3)}
+.qh .r2{display:flex;align-items:center;gap:10px;margin-top:11px;flex-wrap:wrap;
+  font-size:14px;color:var(--ink-2)}
+.qh .cust{font-weight:600;color:var(--ink)}
+.qh .sepd{color:var(--rule-2);color:#C6CCD3}
+.qh .warn{color:var(--accent);font-weight:500}
+
+/* table */
+.thead,.row{display:grid;grid-template-columns:56px minmax(0,1fr) 84px 106px 116px 126px 58px;
+  gap:12px;align-items:center}
+.thead{position:sticky;top:0;z-index:5;background:#EFF2F5;padding:12px 22px;
+  border-bottom:1px solid var(--rule)}
+.thead span{font-size:13px;font-weight:600;color:var(--ink-2)}
+.c{text-align:center}
+.e{text-align:end}
+.row{padding:14px 22px;border-bottom:1px solid var(--rule-2)}
+/* hairline that splits "what it is" from "what it costs" */
+.thead>*:nth-child(3),.row>*:nth-child(3){
+  border-inline-start:1px solid var(--rule-2);padding-inline-start:12px;margin-inline-start:-2px}
+.row:hover{background:var(--zebra)}
+.thumb{width:52px;height:52px;border:1px solid var(--rule);border-radius:3px;background:#F5F7F9;
+  display:grid;place-items:center;color:#AEB7C0}
+.thumb svg{width:22px;height:22px}
+.row .nm{font-size:16px;font-weight:600;line-height:1.45}
+.row .sk{font-size:13px;color:var(--ink-3);margin-top:5px}
+.row .src{font-size:13.5px;color:var(--ink-2);margin-top:7px;padding-inline-start:10px;
+  border-inline-start:2px solid #C3CDD6;line-height:1.5}
+.row .src.man{color:var(--ink-3)}
+.row .st{font-size:14px;color:var(--ink-2)}
+.row .st.low{color:var(--accent)}
+.row .up,.row .am{font-size:15px;font-variant-numeric:tabular-nums}
+.row .up{color:var(--ink-2)}
+.row .am{font-weight:700;font-size:15.5px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--rule);border-radius:3px;height:34px}
+.qty button{width:30px;height:32px;color:var(--ink-2);font-size:17px;line-height:1}
+.qty button:hover{background:var(--rule-2);color:var(--ink)}
+.qty span{min-width:34px;text-align:center;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.rowend{display:flex;align-items:center;justify-content:flex-end;gap:2px}
+.mini{width:28px;height:28px;border-radius:3px;display:grid;place-items:center;
+  color:var(--ink-3);opacity:0;transition:opacity .12s;position:relative}
+.row:hover .mini,.mini:focus-visible{opacity:1}
+.mini:hover{background:var(--rule);color:var(--ink)}
+.mini[disabled]{display:none}
+.mini svg{width:16px;height:16px}
+
+/* swap */
+.swap{grid-column:1/-1;display:none;margin-top:10px;padding:12px 14px;background:#F7F9FA;border:1px solid var(--rule)}
+.row.open .swap{display:block}
+.alt{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--rule)}
+.alt:first-of-type{border-top:0}
+.alt .an{font-size:14.5px;font-weight:500}
+.alt .as{font-size:13px;color:var(--ink-3);margin-top:3px}
+.alt .grow{flex:1}
+.alt .dd{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.alt .dd.save{color:var(--accent);font-weight:500}
+.pick{font-size:13.5px;font-weight:500;border:1px solid var(--rule);border-radius:3px;padding:4px 12px;color:var(--ink-2);background:var(--panel)}
+.pick:hover{border-color:var(--ink);color:var(--ink)}
+
+/* add */
+.addw{padding:16px 22px 22px}
+.add{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:500;color:var(--ink-2);
+  padding:12px 16px;width:100%;border:1px dashed var(--line,#CBD2D9);border-radius:3px}
+.add:hover{color:var(--ink);border-color:var(--ink-3);background:var(--zebra)}
+.picker{display:none;margin-top:8px;border:1px solid var(--rule);border-radius:3px}
+.picker.open{display:block}
+.picker input{width:100%;border:0;border-bottom:1px solid var(--rule);padding:12px 16px;outline:0;font-size:14.5px}
+.pl{max-height:230px;overflow-y:auto}
+.pi{display:flex;align-items:center;gap:12px;width:100%;padding:9px 14px;border-top:1px solid var(--rule-2)}
+.pi:first-child{border-top:0}
+.pi:hover{background:var(--zebra)}
+.pi .pn{font-size:14.5px;font-weight:500}
+.pi .ps{font-size:13px;color:var(--ink-3);margin-top:3px}
+.pi .grow{flex:1}
+.pi .pp{font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.empty{padding:14px;font-size:13px;color:var(--ink-3);text-align:center}
+
+/* sticky foot */
+.foot{flex:none;border-top:1px solid var(--rule);background:var(--panel);padding:0 22px;height:66px;
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.foot .k{font-size:14px;color:var(--ink-2);display:inline-flex;align-items:center;gap:7px}
+.foot .m{font-size:15px;font-weight:600;color:var(--ink);min-width:76px;text-align:end}
+.foot .sep{width:1px;height:18px;background:var(--rule);margin:0 7px}
+.foot .kt{font-size:15px;color:var(--ink);font-weight:600}
+.foot .tot{font-size:25px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+.foot .grow{flex:1}
+.foot .note{font-size:13.5px;color:var(--ink-3)}
+
+.toast{font-weight:500;position:fixed;bottom:66px;inset-inline-start:50%;transform:translateX(50%) translateY(8px);
+  background:var(--ink);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:2px;
+  opacity:0;pointer-events:none;transition:.18s;z-index:60}
+.toast.on{opacity:1;transform:translateX(50%) translateY(0)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:1240px){
+  .frame{grid-template-columns:1fr 1fr 2fr}
+  .thead,.row{grid-template-columns:44px minmax(0,1fr) 70px 92px 90px 98px 48px;gap:8px;padding-inline:14px}
+  .qh,.addw{padding-inline:14px}
+}
+@media (max-width:900px){
+  body{overflow:auto}
+  .frame{grid-template-columns:1fr;height:auto}
+  .col{border-inline-start:0;border-top:1px solid var(--rule)}
+  .list,.stage{overflow:visible}
+  .thead{display:none}
+  .row{grid-template-columns:44px minmax(0,1fr) auto;gap:8px}
+  .row .st,.row .up{display:none}
+  .mini{opacity:1}
+  .foot{position:sticky;bottom:0;height:auto;padding:12px 16px}
+}
+@media print{
+  .top,.col:not(.doc),.dhead,.foot,.addw,.rowend{display:none}
+  .frame{display:block;height:auto}
+  .stage{overflow:visible}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#" aria-label="צלח — הכל למקצוען">
+    <img src="assets/tzlach-logo.png" alt="צלח — הכל למקצוען">
+  </a>
+  <span class="bar"></span>
+  <h1>מרכז המכירות</h1>
+  <span class="grow"></span>
+  <span class="meta">נסרקו <span class="n">12</span> מיילים · <span class="n" id="topSync">09:44</span></span>
+  <span class="bar"></span>
+  <span class="av">א״כ</span>
+</header>
+
+<div class="frame">
+
+  <!-- ═══ 1 · requests ═══ -->
+  <section class="col">
+    <div class="chead"><span class="t">בקשות מחיר</span><span class="grow"></span><span class="c" id="rCount">5</span></div>
+    <div class="srch"><input id="mSearch" placeholder="חיפוש לקוח או נושא" oninput="reqs()"></div>
+    <div class="sync">
+      <span>Microsoft 365 · סונכרן <span class="n" id="syncAt">09:44</span></span>
+      <span class="grow"></span>
+      <button class="fetch" id="fetchBtn" onclick="fetchNow()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-.7 4.3"/><path d="M20 5v6h-6"/></svg>
+        משוך עכשיו
+      </button>
+    </div>
+    <div class="list" id="reqs"></div>
+  </section>
+
+  <!-- ═══ 2 · the thread ═══ -->
+  <section class="col">
+    <div class="chead"><span class="t">מיילים בבקשה</span><span class="grow"></span><span class="c" id="eCount"></span></div>
+    <div class="list" id="thread"></div>
+  </section>
+
+  <!-- ═══ 3 · document ═══ -->
+  <section class="col doc">
+    <div class="dhead">
+      <span class="lead"><b id="hNo"></b> · <span id="hTitle"></span></span>
+      <span class="grow"></span>
+      <button class="ico" data-tip="שלח במייל" onclick="say('ההצעה נשלחה ללקוח')" aria-label="שלח במייל">
+        <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.6 6.6 12 13l8.4-6.4"/></svg></button>
+      <button class="ico" data-tip="הורד PDF" onclick="say('הקובץ ירד')" aria-label="הורד PDF">
+        <svg class="i" viewBox="0 0 24 24"><path d="M12 4v11m-4-4 4 4 4-4M5 19h14"/></svg></button>
+      <button class="ico" data-tip="הדפס" onclick="window.print()" aria-label="הדפס">
+        <svg class="i" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 19h10v-6H7z"/><path d="M7 9h10a2 2 0 0 1 2 2v4h-2M7 9a2 2 0 0 0-2 2v4h2"/></svg></button>
+      <button class="ico" data-tip="שכפל" onclick="say('ההצעה שוכפלה')" aria-label="שכפל">
+        <svg class="i" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V6a1.5 1.5 0 0 1 1.5-1.5H15"/></svg></button>
+      <button class="ico go" data-tip="פתח הזמנה ב־SAP" onclick="say('נפתחה הזמנה ב־SAP')" aria-label="פתח הזמנה">
+        <svg class="i" viewBox="0 0 24 24"><path d="M4 6h2l2.2 9.5h9L19 9H7"/><circle cx="9.5" cy="19" r="1.2"/><circle cx="16.5" cy="19" r="1.2"/></svg></button>
+    </div>
+
+    <div class="stage">
+      <div class="qh">
+        <div class="r1">
+          <h2 id="dTitle"></h2>
+          <span class="no"><span class="n" id="dNo"></span></span>
+          <span class="pill" id="dState"></span>
+        </div>
+        <div class="r2">
+          <span class="cust" id="dTo"></span>
+          <span class="sepd">·</span><span id="dToMail"></span>
+          <span class="sepd">·</span><span id="qMeta"></span>
+          <span class="sepd">·</span><span id="qShip"></span>
+        </div>
+      </div>
+
+      <div class="srcbar" id="srcbar">
+        <span id="srcTxt"></span>
+        <span class="grow"></span>
+        <button onclick="clearFocus()">הצג את כל השורות</button>
+      </div>
+
+      <div class="thead">
+        <span></span><span>פריט</span><span>מלאי</span><span>כמות</span>
+        <span class="e">מחיר ליחידה</span><span class="e">סה״כ</span><span></span>
+      </div>
+      <div id="rows"></div>
+
+      <div class="addw">
+        <button class="add" onclick="togglePicker()">
+          <svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M12 5v14M5 12h14"/></svg> הוסף פריט מהמלאי
+        </button>
+        <div class="picker" id="picker">
+          <input id="pSearch" placeholder="שם מוצר או מק״ט" oninput="renderPicker()">
+          <div class="pl" id="plist"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="k">סכום ביניים</span><span class="m" id="tSub"></span>
+      <span class="sep"></span>
+      <span class="k">הנחה <input class="din" id="disc" type="number" value="4" min="0" max="40" aria-label="אחוז הנחה">%</span><span class="m" id="tDisc"></span>
+      <span class="sep"></span>
+      <span class="k">מע״מ <span class="n">18%</span></span><span class="m" id="tVat"></span>
+      <span class="grow"></span>
+      <span class="note" id="fNote"></span>
+      <span class="sep"></span>
+      <span class="kt">סה״כ לתשלום</span><span class="tot m" id="fTot"></span>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── money (mirrors quote-builder/lib/money.ts) ── */
+const VAT = 0.18;
+const r2 = n => Math.round((n + Number.EPSILON) * 100) / 100;
+const nf0 = new Intl.NumberFormat("he-IL");
+const nf2 = new Intl.NumberFormat("he-IL",{minimumFractionDigits:2,maximumFractionDigits:2});
+const money = n => "₪" + nf0.format(Math.round(n));    // totals: whole ₪
+const unit  = n => "₪" + nf2.format(r2(n));           // unit prices keep agorot
+
+/* ── catalog ── */
+const CAT=[
+ {sku:"4051182",name:"מברגה/מקדחה נטענת 18V LXT, 2 סוללות 5.0Ah וקייס",brand:"MAKITA",mpn:"DHP484RTJ",u:"יח׳",price:1290,stock:18},
+ {sku:"4057003",name:"סוללה 18V LXT 5.0Ah עם חיווי טעינה",brand:"MAKITA",mpn:"BL1850B",u:"יח׳",price:385,stock:26},
+ {sku:"9010507",name:"ארגז כלים מודולרי FatMax, 3 קומות על גלגלים",brand:"STANLEY",mpn:"FMST83319",u:"יח׳",price:640,stock:12},
+ {sku:"2011219",name:"סט מברגים מתחלפים מבודד 1000V, 17 חלקים",brand:"WERA",mpn:"KK VDE 17",u:"סט",price:797.5,stock:9},
+ {sku:"2013104",name:"מפתח מומנט ½״ 40–200Nm עם נעילה",brand:"BLOSTA",mpn:"BL-TW200",u:"יח׳",price:690,stock:7},
+ {sku:"7010301",name:"משקפי מגן ANSI Z87+ נגד אדים",brand:"3M",mpn:"SF401AF",u:"יח׳",price:49,stock:120},
+ {sku:"4052125",name:"פטישון נטען 18V SDS-Plus Brushless",brand:"MILWAUKEE",mpn:"M18 CHPX",u:"יח׳",price:1980,stock:4},
+ {sku:"4052117",name:"פטישון SDS-Plus 800W 2.7J",brand:"BOSCH",mpn:"GBH 2-26",u:"יח׳",price:1150,stock:11},
+ {sku:"4051204",name:"מקדחה/מברגה נטענת 12V קומפקטית, 2 סוללות 2.0Ah",brand:"MAKITA",mpn:"DF333DWAE",u:"יח׳",price:690,stock:24},
+ {sku:"4051190",name:"מברגת אימפקט נטענת 18V 200Nm",brand:"BOSCH",mpn:"GDX 18V-200",u:"יח׳",price:899,stock:7},
+ {sku:"4054210",name:"מסור עגול נטען 18V 165מ״מ",brand:"MAKITA",mpn:"DHS680Z",u:"יח׳",price:1420,stock:6},
+ {sku:"4053502",name:"מלטשת אקסצנטרית 125מ״מ 300W",brand:"BOSCH",mpn:"GEX 125-1",u:"יח׳",price:645,stock:14},
+ {sku:"4053118",name:"משחזת זווית נטענת 18V 125מ״מ, גוף בלבד",brand:"MAKITA",mpn:"DGA504Z",u:"יח׳",price:860,stock:9},
+ {sku:"4053101",name:"משחזת זווית 125מ״מ 1400W, הפעלה רכה",brand:"BOSCH",mpn:"GWS 14-125",u:"יח׳",price:549,stock:32},
+ {sku:"4052330",name:"פטיש חציבה SDS-Max 17J 1500W",brand:"MAKITA",mpn:"HM1203C",u:"יח׳",price:3690,stock:2},
+ {sku:"6020441",name:"פנס עבודה נטען 18V LED 1250 לומן",brand:"MAKITA",mpn:"DML812",u:"יח׳",price:320,stock:15},
+ {sku:"3010119",name:"ערכת מקדחים למתכת HSS-Co, 19 חלקים",brand:"RUKO",mpn:"215215",u:"סט",price:189,stock:41},
+];
+const P = s => CAT.find(p => p.sku === s);
+const SWAPS={"4051182":["4051204","4052117"],"2011219":["3010119"],"9010507":["6020441"],
+             "4057003":["4051204"],"2013104":["4053101"],"7010301":["3010119"]};
+const STATE={
+  DRAFT:   {he:"טיוטה",          c:"st-draft"},
+  REVIEW:  {he:"ממתין לאישור",   c:"st-review"},
+  SENT:    {he:"נשלחה ללקוח",    c:"st-sent"},
+  ACCEPTED:{he:"אושרה",          c:"st-accepted"},
+  REJECTED:{he:"נדחתה",          c:"st-rejected"},
+};
+
+/* ── mail threads: one request = many emails, one quote ── */
+const REQS=[
+ {id:"r1",cust:"מפעלי תעשיות ברק בע״מ",subject:"רענון ארגז כלים למחלקת אחזקה",time:"09:42",
+  mails:[
+   {id:"e1",from:"מיכל לוי",role:"רכש",time:"היום 09:42",subject:"בקשה להצעת מחיר – ארגז כלים לאחזקה",
+    body:'אנחנו מרעננים את ארגזי הכלים של מחלקת האחזקה, ארבעה טכנאים. נשמח להצעה עבור <em>4 מברגות נטענות 18V עם 2 סוללות</em>, <em>8 סוללות רזרביות 5.0Ah</em> ו<em>4 ארגזי כלים על גלגלים</em>.',n:3},
+   {id:"e2",from:"מיכל לוי",role:"רכש",time:"היום 10:05",subject:"תוספת לבקשה",
+    body:'שכחתי לציין, צריך גם <em>2 סטים של מברגים מבודדים 1000V</em> ו<em>2 מפתחות מומנט חצי אינץ׳</em>.',n:2},
+   {id:"e3",from:"יוסי אברהם",role:"מנהל אחזקה",time:"היום 10:20",subject:"עוד דבר אחד",
+    body:'מיכל ביקשה שאוסיף: צריך <em>משקפי מגן לכל הצוות</em>, שישה אנשים. תודה.',n:1}],
+  quote:{title:"ארגז כלים מלא למחלקת אחזקה",no:"DR-2026-0148",state:"DRAFT",lines:[
+   {sku:"4051182",n:4,src:"4 מברגות נטענות 18V עם 2 סוללות",from:"e1"},
+   {sku:"4057003",n:8,src:"8 סוללות רזרביות 5.0Ah",from:"e1"},
+   {sku:"9010507",n:4,src:"4 ארגזי כלים על גלגלים",from:"e1"},
+   {sku:"2011219",n:2,src:"2 סטים של מברגים מבודדים 1000V",from:"e2"},
+   {sku:"2013104",n:2,src:"2 מפתחות מומנט חצי אינץ׳",from:"e2"},
+   {sku:"7010301",n:6,src:"משקפי מגן לכל הצוות, שישה אנשים",from:"e3"}]}},
+
+ {id:"r2",cust:"אלקטרו־דן שירותי חשמל",subject:"ערכת חשמלאי לשלושה עובדים חדשים",time:"08:17",
+  mails:[
+   {id:"e4",from:"דן שגב",role:"בעלים",time:"היום 08:17",subject:"ערכה לשלושה חשמלאים חדשים",
+    body:'קלטנו שלושה חשמלאים חדשים. צריך ערכה בסיסית לכל אחד: <em>סט מברגים מבודדים 1000V</em> ו<em>פנס עבודה נטען</em>.',n:2},
+   {id:"e5",from:"דן שגב",role:"בעלים",time:"היום 08:41",subject:"תוספת",
+    body:'תוסיף בבקשה גם <em>משקפי מגן</em> לכל אחד. מה זמן האספקה?',n:1}],
+  quote:{title:"ערכת חשמלאי ×3",no:"DR-2026-0151",state:"REVIEW",lines:[
+   {sku:"2011219",n:3,src:"סט מברגים מבודדים 1000V",from:"e4"},
+   {sku:"6020441",n:3,src:"פנס עבודה נטען",from:"e4"},
+   {sku:"7010301",n:3,src:"משקפי מגן לכל אחד",from:"e5"}]}},
+
+ {id:"r3",cust:"עיריית ראשון לציון",subject:"מכרז 41/2026 — תמחור ציוד תחזוקה",time:"אתמול 16:05",
+  mails:[
+   {id:"e6",from:"אגף תחזוקה",role:"רכש",time:"אתמול 16:05",subject:"מכרז 41/2026 — כתב כמויות",
+    body:'מצורף כתב כמויות לתמחור: <em>פטישוני SDS-Plus</em> ו<em>משחזות זווית 125 מ״מ</em>.',n:2},
+   {id:"e7",from:"אגף תחזוקה",role:"רכש",time:"אתמול 16:40",subject:"השלמה לכתב הכמויות",
+    body:'נא לכלול גם <em>מסורים עגולים נטענים</em>, שלוש יחידות.',n:1},
+   {id:"e8",from:"רונית כהן",role:"מנהלת רכש",time:"אתמול 17:12",subject:"סעיף 4",
+    body:'סעיף 4 במכרז דורש <em>ארגזי כלים ניידים</em>, חמש יחידות.',n:1},
+   {id:"e9",from:"אגף תחזוקה",role:"רכש",time:"היום 07:50",subject:"תזכורת",
+    body:'נשמח לקבל את ההצעה עד סוף השבוע. נדרשת אחריות שלוש שנים.',n:0}],
+  quote:{title:"תמחור מכרז 41/2026",no:"DR-2026-0152",state:"SENT",lines:[
+   {sku:"4052117",n:5,src:"פטישוני SDS-Plus",from:"e6"},
+   {sku:"4053101",n:6,src:"משחזות זווית 125 מ״מ",from:"e6"},
+   {sku:"4054210",n:3,src:"מסורים עגולים נטענים, שלוש יחידות",from:"e7"},
+   {sku:"9010507",n:5,src:"ארגזי כלים ניידים, חמש יחידות",from:"e8"}]}},
+
+ {id:"r4",cust:"ש.ג. מיזוג אוויר בע״מ",subject:"השלמת ציוד לצוות ההתקנות",time:"אתמול 11:28",
+  mails:[
+   {id:"e10",from:"שגיא גל",role:"מנהל",time:"אתמול 11:28",subject:"השלמת ציוד",
+    body:'צריך להשלים לצוות ההתקנות <em>מברגת אימפקט 18V</em> ו<em>סט מקדחים למתכת</em>. אפשר לקבל מחיר להיום?',n:2}],
+  quote:{title:"השלמת ציוד לצוות התקנות",no:"DR-2026-0153",state:"ACCEPTED",lines:[
+   {sku:"4051190",n:2,src:"מברגת אימפקט 18V",from:"e10"},
+   {sku:"3010119",n:2,src:"סט מקדחים למתכת",from:"e10"}]}},
+
+ {id:"r5",cust:"ג׳י.טי טכנולוגיות ייצור",subject:"חידוש כלים לקו ייצור 2",time:"10/08 14:53",
+  mails:[
+   {id:"e11",from:"רכש GT",role:"רכש",time:"10/08 14:53",subject:"חידוש כלים לקו 2",
+    body:'לקראת הרבעון הבא נדרש חידוש כלים לקו ייצור 2: <em>מפתחות מומנט</em> ו<em>משחזות</em>.',n:2},
+   {id:"e12",from:"אבי מור",role:"מנהל תפעול",time:"11/08 09:10",subject:"להוסיף",
+    body:'צריך גם <em>ארגזי כלים ניידים</em> לשלוש עמדות.',n:1}],
+  quote:{title:"חידוש כלים קו ייצור 2",no:"DR-2026-0155",state:"REJECTED",lines:[
+   {sku:"2013104",n:3,src:"מפתחות מומנט",from:"e11"},
+   {sku:"4053101",n:4,src:"משחזות",from:"e11"},
+   {sku:"9010507",n:3,src:"ארגזי כלים ניידים לשלוש עמדות",from:"e12"}]}},
+];
+const R = id => REQS.find(x=>x.id===id);
+
+let s = {req:"r1", focus:null, lines:[], disc:4};
+
+/* ── render ── */
+function reqs(){
+  const term=(document.getElementById("mSearch")?.value||"").trim();
+  const hits=REQS.filter(q=>!term||q.cust.includes(term)||q.subject.includes(term));
+  document.getElementById("rCount").textContent=hits.length;
+  document.getElementById("reqs").innerHTML=hits.map(q=>`
+    <button class="mail" aria-current="${q.id===s.req}" onclick="pickReq('${q.id}')">
+      <div class="r"><span class="f">${q.cust}</span><span class="t">${q.time}</span></div>
+      <div class="s">${q.subject}</div>
+      <div class="rmeta">
+        <span class="pill ${STATE[q.quote.state].c}">${STATE[q.quote.state].he}</span>
+        <span class="rno n">${q.quote.no}</span>
+      </div>
+      ${q.mails.length>1?`<span class="thread">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v9H4z"/><path d="M7 5h13v9"/></svg>
+        <span class="n">${q.mails.length}</span> מיילים בבקשה זו</span>`:""}
+    </button>`).join("");
+}
+
+function thread(){
+  const q=R(s.req);
+  document.getElementById("eCount").textContent=q.mails.length;
+  document.getElementById("thread").innerHTML=q.mails.map(m=>`
+    <button class="ml" aria-current="${m.id===s.focus}" onclick="focusMail('${m.id}')">
+      <div class="r"><span class="f">${m.from} · ${m.role}</span><span class="t">${m.time}</span></div>
+      <div class="sub">${m.subject}</div>
+      <div class="bd">${m.body}</div>
+      <div class="ft">
+        ${m.n?`<span class="ext">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M4 12l5 5L20 6"/></svg>
+          <span class="n">${m.n}</span> ${m.n===1?"פריט חולץ":"פריטים חולצו"}</span>`
+         :`<span class="ext none">לא נמצאו פריטים במייל זה</span>`}
+      </div>
+    </button>`).join("");
+}
+
+function head(){
+  const q=R(s.req), d=q.quote;
+  document.getElementById("hNo").textContent=d.no;
+  document.getElementById("hTitle").textContent=d.title;
+  document.getElementById("dNo").textContent=d.no;
+  const st=STATE[d.state];
+  const pill=document.getElementById("dState");
+  pill.textContent=st.he; pill.className="pill "+st.c;
+  document.getElementById("dTitle").textContent=d.title;
+  document.getElementById("dTo").textContent=q.cust;
+  document.getElementById("dToMail").innerHTML=
+    `נבנתה מ־<span class="n">${q.mails.length}</span> ${q.mails.length===1?"מייל":"מיילים"}`;
+}
+
+function rows(){
+  document.getElementById("rows").innerHTML=s.lines.map((l,i)=>{
+    const p=P(l.sku), short=l.n>p.stock;
+    const alts=(SWAPS[l.sku]||[]).map(P).filter(Boolean);
+    const cls = s.focus ? (l.from===s.focus ? " hl" : " dim") : "";
+    return `<div class="row${cls}" id="r${i}">
+      <div class="thumb" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4.5" width="18" height="15" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="m3.5 17 5-4.5 4 3.5 3-2.5 5 4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="nm">${p.name}</div>
+        <div class="sk">מק״ט <span class="n">${p.sku}</span> · <span class="n">${p.brand} ${p.mpn}</span></div>
+        <div class="src ${l.src?"":"man"}">${l.src||"נוסף ידנית על ידי הנציג"}</div>
+      </div>
+      <div class="st ${short?"low":""}">${short?`חסר ${l.n-p.stock}`:`${p.stock} ${p.u}`}</div>
+      <div class="c"><span class="qty">
+        <button onclick="event.stopPropagation();qty(${i},-1)" aria-label="הפחת">−</button>
+        <span>${l.n}</span>
+        <button onclick="event.stopPropagation();qty(${i},1)" aria-label="הוסף">+</button>
+      </span></div>
+      <div class="up e m">${unit(p.price)}</div>
+      <div class="am e m">${money(r2(p.price*l.n))}</div>
+      <div class="rowend">
+        <button class="mini" data-tip="החלף" onclick="openSwap(${i})" ${alts.length?"":"disabled"} aria-label="החלף פריט">
+          <svg class="i" viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></button>
+        <button class="mini" data-tip="הסר" onclick="drop(${i})" aria-label="הסר שורה">
+          <svg class="i" viewBox="0 0 24 24"><path d="M6 7h12M10 7V5h4v2M8 7l.8 12h6.4L16 7"/></svg></button>
+      </div>
+      <div class="swap">
+        <div class="lbl" style="margin-bottom:8px">חלופות במלאי</div>
+        ${alts.map(a=>{
+          const d=r2((a.price-p.price)*l.n);
+          return `<div class="alt">
+            <div><div class="an">${a.name}</div><div class="as">מק״ט <span class="n">${a.sku}</span> · במלאי <span class="n">${a.stock}</span></div></div>
+            <span class="grow"></span>
+            <span class="dd m ${d<0?"save":""}">${d<0?"−":"+"}${money(Math.abs(d))}</span>
+            <button class="pick" onclick="event.stopPropagation();swapTo(${i},'${a.sku}')">החלף</button>
+          </div>`;}).join("")}
+      </div>
+    </div>`;
+  }).join("");
+  renderPicker(); sums();
+}
+
+function renderPicker(){
+  const box=document.getElementById("plist"); if(!box) return;
+  const term=(document.getElementById("pSearch")?.value||"").trim();
+  const used=new Set(s.lines.map(l=>l.sku));
+  const hits=CAT.filter(p=>!used.has(p.sku))
+    .filter(p=>!term||p.name.includes(term)||p.sku.includes(term)||p.brand.toLowerCase().includes(term.toLowerCase()));
+  box.innerHTML=hits.length?hits.map(p=>`
+    <button class="pi" onclick="addLine('${p.sku}')">
+      <div><div class="pn">${p.name}</div><div class="ps">מק״ט <span class="n">${p.sku}</span> · <span class="n">${p.brand}</span> · במלאי <span class="n">${p.stock}</span></div></div>
+      <span class="grow"></span><span class="pp m">${unit(p.price)}</span>
+    </button>`).join(""):`<div class="empty">אין מוצר תואם</div>`;
+}
+
+function sums(){
+  const sub=r2(s.lines.reduce((a,l)=>a+r2(P(l.sku).price*l.n),0));
+  const dis=r2(sub*(s.disc/100));
+  const net=r2(sub-dis);
+  const vat=r2(net*VAT);
+  document.getElementById("tSub").textContent=money(sub);
+  document.getElementById("tDisc").textContent="−"+money(dis);
+  document.getElementById("tVat").textContent=money(vat);
+  document.getElementById("fTot").textContent=money(r2(net+vat));
+  const units=s.lines.reduce((a,l)=>a+l.n,0);
+  document.getElementById("qMeta").innerHTML=
+    `<span class="n">${s.lines.length}</span> שורות · <span class="n">${units}</span> יחידות`;
+  document.getElementById("fNote").textContent="כולל מע״מ";
+  const late=s.lines.filter(l=>l.n>P(l.sku).stock).length;
+  document.getElementById("qShip").innerHTML=
+    late?`<span class="warn">${late} פריטים חסרים במלאי</span>`:"הכל במלאי, אספקה עד 3 ימי עסקים";
+}
+
+/* ── actions ── */
+function pickReq(id){ s.req=id; s.focus=null; load(); reqs(); thread(); head(); srcbar(); }
+function focusMail(id){
+  s.focus = s.focus===id ? null : id;
+  thread(); rows(); srcbar();
+}
+function clearFocus(){ s.focus=null; thread(); rows(); srcbar(); }
+function srcbar(){
+  const bar=document.getElementById("srcbar");
+  if(!s.focus){ bar.classList.remove("on"); return; }
+  const m=R(s.req).mails.find(x=>x.id===s.focus);
+  const c=s.lines.filter(l=>l.from===s.focus).length;
+  document.getElementById("srcTxt").innerHTML=
+    `מוצגות <span class="n">${c}</span> שורות שחולצו מהמייל של ${m.from} · ${m.time}`;
+  bar.classList.add("on");
+}
+function load(){
+  s.lines=R(s.req).quote.lines.map(l=>({sku:l.sku,n:l.n,src:l.src,from:l.from}));
+  rows();
+}
+function qty(i,d){ s.lines[i].n=Math.max(1,s.lines[i].n+d); rows(); }
+function drop(i){ s.lines.splice(i,1); rows(); srcbar(); say("השורה הוסרה"); }
+function swapTo(i,sku){ s.lines[i]={sku,n:s.lines[i].n,src:null,from:s.lines[i].from}; rows(); say("הפריט הוחלף"); }
+function openSwap(i){ document.getElementById("r"+i).classList.toggle("open"); }
+function addLine(sku){ s.lines.push({sku,n:1,src:null,from:null}); rows(); say("הפריט נוסף"); }
+function togglePicker(){
+  document.getElementById("picker").classList.toggle("open");
+  document.getElementById("pSearch").focus();
+}
+document.getElementById("disc").addEventListener("input",e=>{
+  s.disc=Math.min(40,Math.max(0,+e.target.value||0)); sums();
+});
+
+function fetchNow(){
+  const b=document.getElementById("fetchBtn");
+  b.classList.add("busy");
+  say("מושך מיילים חדשים מ־Microsoft 365…");
+  setTimeout(()=>{
+    const now=new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});
+    document.getElementById("syncAt").textContent=now;
+    document.getElementById("topSync").textContent=now;
+    b.classList.remove("busy");
+    say("אין בקשות חדשות · נסרקו 12 מיילים");
+  },1400);
+}
+
+let t;
+function say(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("on");
+  clearTimeout(t); t=setTimeout(()=>el.classList.remove("on"),2000);
+}
+
+reqs(); thread(); head(); load();
+</script>
+</body>
+</html>
